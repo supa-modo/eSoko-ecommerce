@@ -7,18 +7,21 @@ import {
   Menu,
   ChevronDown,
 } from "lucide-react";
+import heroImage from "./assets/images/ecommerce.jpg";
+import esokoLogo from "./assets/images/esoko-logo.png";
 
 // Navbar Component
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
+    <nav className="bg-white opacity-90 shadow-md fixed top-0 left-0 right-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
+        <div className="flex justify-between h-24 items-center">
           {/* Logo */}
-          <div className="flex-shrink-0 flex items-center">
-            <h1 className="text-2xl font-bold text-gray-900">FashionHub</h1>
+          <div className="flex-shrink-0 flex items-center gap-4">
+            <img src={esokoLogo} alt="logo" className="w-16" />
+            <h1 className="text-2xl font-bold text-gray-900">eSoko </h1>
           </div>
 
           {/* Main Navigation */}
@@ -155,21 +158,24 @@ const Navbar = () => {
 // Hero Section Component
 const HeroSection = () => {
   return (
-    <div className="relative h-[600px] mt-16">
+    <div className="relative h-[730px]">
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage: 'url("/api/placeholder/1920/1080")',
-          backgroundPosition: "center",
-        }}
+        // style={{
+        //   backgroundImage: `url(${heroImage})`,
+        //   backgroundPosition: "center",
+        // }}
       >
-        <div className="absolute inset-0 bg-black opacity-40"></div>
+        <div className="absolute inset-0 "></div>
         <div className="relative z-10 flex flex-col justify-center items-center h-full text-white text-center">
-          <h1 className="text-5xl font-bold mb-4">Summer Collection 2024</h1>
-          <p className="text-xl mb-8">Discover the Latest Trends in Fashion</p>
+          <h1 className="text-7xl font-bold mb-2">
+            eSoko Online Fashion Store
+          </h1>
+          <h1 className="text-5xl font-bold mb-4">'Spirit of Fashion'</h1>
+          <p className="text-2xl italic mb-6">Shine in Your Element</p>
           <a
             href="#"
-            className="px-8 py-3 bg-white text-black hover:bg-gray-100 transition rounded-full font-semibold"
+            className="px-12 py-3 mb-20 bg-brand-primary text-white hover:bg-gray-100 transition rounded-full font-semibold"
           >
             Shop Now
           </a>
@@ -228,7 +234,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand Info */}
           <div>
-            <h3 className="text-2xl font-bold mb-4">FashionHub</h3>
+            <h3 className="text-2xl font-bold mb-4">eSoko</h3>
             <p className="text-gray-400">
               Your ultimate destination for fashion trends and style.
             </p>
@@ -309,7 +315,7 @@ const Footer = () => {
 
         {/* Copyright */}
         <div className="mt-8 border-t border-gray-700 pt-8 text-center">
-          <p>&copy; 2024 FashionHub. All Rights Reserved.</p>
+          <p>&copy; 2024 eSoko. All Rights Reserved.</p>
         </div>
       </div>
     </footer>
@@ -320,9 +326,20 @@ const Footer = () => {
 const HomePage = () => {
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar />
+      <div
+        className=" bg-cover bg-center "
+        style={{
+          backgroundImage: `url(${heroImage})`,
+          backgroundPosition: "center",
+        }}
+      >
+        <div className="bg-black bg-opacity-55">
+          <Navbar />
+          <HeroSection />
+        </div>
+      </div>
+      {/* <Navbar /> */}
       <main className="flex-grow">
-        <HeroSection />
         <FeaturedCategories />
         {/* You can add more sections like New Arrivals, Featured Products, etc. */}
       </main>
