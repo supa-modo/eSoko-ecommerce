@@ -6,8 +6,10 @@ import {
   ChevronDown,
   Heart,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const UserSection = () => {
+  const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
@@ -110,7 +112,12 @@ const UserSection = () => {
 
       {/* Cart Button */}
       <div className="relative">
-        <button className="text-gray-700 hover:text-black">
+        <button
+          onClick={() => {
+            navigate("/cart");
+          }}
+          className="text-gray-700 hover:text-black"
+        >
           <ShoppingCart className="w-9 h-7" />
         </button>
         {/* Badge */}

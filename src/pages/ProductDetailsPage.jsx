@@ -20,6 +20,7 @@ import clothe7 from "../assets/images/shirt2.jpg";
 import clothe8 from "../assets/images/shoe.jpg";
 import clothe9 from "../assets/images/suit2.jpg";
 import Breadcrumbs from "../components/Layout/BreadcrumbNavigation";
+import Footer from "../components/Layout/Footer";
 
 // mock product data from the product list component
 const productData = [
@@ -424,7 +425,9 @@ const ProductDetailsPage = () => {
               ))}
               <Star size={20} />
             </div>
-            <span className="text-gray-600 text-sm">(24 Customer Reviews)</span>
+            <span className="text-gray-600 font-semibold text-sm">
+              (24 Customer Reviews)
+            </span>
           </div>
 
           {/* Price */}
@@ -437,17 +440,17 @@ const ProductDetailsPage = () => {
           </div>
 
           {/* Color Selection */}
-          <div className="mb-6">
-            <h3 className="font-semibold mb-2">Color</h3>
+          <div className="mb-4">
+            <h3 className="font-semibold mb-2">Available Colors</h3>
             <div className="flex space-x-3">
               {product.colors.map((color) => (
                 <button
                   key={color}
                   onClick={() => setSelectedColor(color)}
-                  className={`w-8 h-8 rounded-full border-2 transform transition-all ${
+                  className={`w-10 h-10 rounded-full border-[3px] transform transition-all ${
                     selectedColor === color
                       ? "border-orange-500 scale-110"
-                      : "border-transparent hover:border-gray-300"
+                      : "border hover:border-gray-300"
                   }`}
                   style={{ backgroundColor: color.toLowerCase() }}
                 />
@@ -456,14 +459,14 @@ const ProductDetailsPage = () => {
           </div>
 
           {/* Size Selection */}
-          <div className="mb-6">
-            <h3 className="font-semibold mb-2">Size</h3>
+          <div className="mb-4">
+            <h3 className="font-semibold mb-2">Choose a Size</h3>
             <div className="flex space-x-2">
               {product.sizes.map((size) => (
                 <button
                   key={size}
                   onClick={() => setSelectedSize(size)}
-                  className={`px-4 py-2 rounded-lg border font-mono ${
+                  className={`px-4 py-2 rounded-lg border text-sm font-semibold font-mono ${
                     selectedSize === size
                       ? "bg-orange-500 text-white border-orange-500"
                       : "bg-white text-brand-primary border-gray-300 hover:bg-gray-100"
@@ -478,17 +481,17 @@ const ProductDetailsPage = () => {
           {/* Quantity Selection */}
           <div className="mb-6 flex items-center space-x-4">
             <span className="font-semibold">Quantity:</span>
-            <div className="flex items-center border rounded-lg overflow-hidden">
+            <div className="flex items-center border font-semibold font-mono rounded-lg overflow-hidden">
               <button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="px-3 py-1 bg-gray-100 hover:bg-gray-200"
+                className="px-3 py-1 bg-gray-100 hover:bg-orange-500 hover:text-white"
               >
                 -
               </button>
               <span className="px-4 py-1">{quantity}</span>
               <button
                 onClick={() => setQuantity(quantity + 1)}
-                className="px-3 py-1 bg-gray-100 hover:bg-gray-200"
+                className="px-3 py-1 bg-gray-100 hover:bg-orange-500 hover:text-white"
               >
                 +
               </button>
@@ -522,25 +525,31 @@ const ProductDetailsPage = () => {
           </div>
 
           {/* Product Guarantees */}
-          <div className="mt-6 grid grid-cols-3 gap-4 text-center">
+          <div className="mt-6 font-mono grid grid-cols-3 gap-4 text-center">
             <div className="flex flex-col items-center">
               <Shield className="text-orange-500 mb-2" size={32} />
-              <span className="text-xs font-semibold">Secure Payment</span>
+              <span className="text-xs font-semibold text-gray-500">
+                Secure Payment
+              </span>
             </div>
             <div className="flex flex-col items-center">
               <Truck className="text-orange-500 mb-2" size={32} />
-              <span className="text-xs font-semibold">Free Shipping</span>
+              <span className="text-xs font-semibold text-gray-500">
+                Fast Shipping
+              </span>
             </div>
             <div className="flex flex-col items-center">
               <Heart className="text-orange-500 mb-2" size={32} />
-              <span className="text-xs font-semibold">Quality Assured</span>
+              <span className="text-xs font-semibold text-gray-500">
+                Quality Assured
+              </span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Product Information Tabs */}
-      <div className="max-w-screen-xl mx-auto px-4 mt-12">
+      <div className="max-w-screen-xl mx-auto px-4 mt-12 py-10">
         <div className="bg-white rounded-2xl shadow-lg">
           {/* Tab Navigation */}
           <div className="flex border-b">
@@ -664,6 +673,7 @@ const ProductDetailsPage = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

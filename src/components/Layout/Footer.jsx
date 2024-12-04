@@ -4,7 +4,7 @@ import esokoLogo from "../../assets/images/esoko-logo.png";
 const Footer = () => {
   return (
     <footer className="bg-gray-600 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand Info */}
           <div>
@@ -24,7 +24,9 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-semibold mb-4">Quick Links</h4>
+            <h4 className="font-semibold text-brand-primary mb-4">
+              Quick Links
+            </h4>
             <ul className="space-y-2">
               <li>
                 <a href="#" className="hover:text-brand-primary">
@@ -51,7 +53,9 @@ const Footer = () => {
 
           {/* Customer Service */}
           <div>
-            <h4 className="font-semibold mb-4">Customer Service</h4>
+            <h4 className="font-semibold text-brand-primary mb-4">
+              Customer Service
+            </h4>
             <ul className="space-y-2">
               <li>
                 <a href="#" className="hover:text-brand-primary">
@@ -78,7 +82,9 @@ const Footer = () => {
 
           {/* Newsletter */}
           <div>
-            <h4 className="font-semibold mb-4">Stay Updated</h4>
+            <h4 className="font-semibold text-brand-primary mb-4">
+              Stay Updated
+            </h4>
             <p className="text-gray-400 mb-4">
               Subscribe to our newsletter for exclusive offers
             </p>
@@ -96,7 +102,7 @@ const Footer = () => {
         </div>
 
         {/* Copyright */}
-        <div className="mt-8 border-t border-gray-700 pt-8 text-center">
+        <div className="mt-8 border-t font-semibold text-brand-primary border-gray-700 pt-8 text-center">
           <p>&copy; 2024 eSoko. All Rights Reserved.</p>
         </div>
       </div>

@@ -13,6 +13,7 @@ import clothe7 from "../../assets/images/shirt2.jpg";
 import clothe8 from "../../assets/images/shoe.jpg";
 import clothe9 from "../../assets/images/suit2.jpg";
 import Breadcrumbs from "../Layout/BreadcrumbNavigation";
+import Footer from "../Layout/Footer";
 
 // Mock Product Data
 const productData = [
@@ -564,6 +565,7 @@ const ProductsPage = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
