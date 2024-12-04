@@ -97,6 +97,11 @@ const UserSection = () => {
                     Logout
                   </button>
                 </li>
+                <li>
+                  <button className="w-full text-left font-semibold block py-1 px-2 hover:bg-brand-primary rounded text-gray-500 hover:text-white">
+                    Admin Screen
+                  </button>
+                </li>
               </ul>
             </div>
           </div>

@@ -1,17 +1,47 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import esokoLogo from "../../assets/images/esoko-logo.png";
 import { Search, ShoppingBag, ShoppingCart } from "lucide-react";
 import UserSection from "../Cart/CartItem";
 
 const Navbar = () => {
-  const [activeNav, setActiveNav] = useState("shop");
+  const [activeNav, setActiveNav] = useState("Home");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const navItems = [
-    { name: "Home", href: "#home", key: "shop" },
-    { name: "Men", href: "#men", key: "men" },
-    { name: "Women", href: "#women", key: "women" },
-    { name: "Kids", href: "#kids", key: "kids" },
+    {
+      name: "Home",
+      onClick: () => {
+        navigate("/");
+        setActiveNav("Home");
+      },
+      key: "Home",
+    },
+    {
+      name: "Men",
+      onClick: () => {
+        navigate("/products/men");
+        setActiveNav("Men");
+      },
+      key: "Men",
+    },
+    {
+      name: "Women",
+      onClick: () => {
+        navigate("/products/women");
+        setActiveNav("Women");
+      },
+      key: "Women",
+    },
+    {
+      name: "Kids",
+      onClick: () => {
+        navigate("/products/kids");
+        setActiveNav("Kids");
+      },
+      key: "Kids",
+    },
   ];
 
   return (
@@ -19,24 +49,23 @@ const Navbar = () => {
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-22">
           {/* Logo */}
-          <div className="flex items-center my-auto gap-x-3">
+          <Link to="/" className="flex items-center my-auto gap-x-3">
             <img src={esokoLogo} alt="logo" className="w-16" />
             <div>
               <h1 className="text-2xl font-bold text-orange-600">eSoko</h1>
               <h1 className="text-[14px] pl-8 font-bold text-red-500">
-                fashion
+                fashion store
               </h1>
             </div>
-          </div>
+          </Link>
 
           {/* Navigation Navbar */}
           <div className="hidden md:flex flex-col justify-end h-full">
             <div className="flex space-x-10 text-lg mt-14 mb-2 font-semibold">
               {navItems.map((item) => (
-                <div key={item.key} className="relative">
-                  <a
-                    href={item.href}
-                    onClick={() => setActiveNav(item.key)}
+                <div key={item.key} className="relative cursor-pointer">
+                  <div
+                    onClick={item.onClick}
                     className={`
                       ${
                         activeNav === item.key
@@ -47,7 +76,7 @@ const Navbar = () => {
                     `}
                   >
                     {item.name}
-                  </a>
+                  </div>
                   {activeNav === item.key && (
                     <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-orange-500 rounded-full"></div>
                   )}
