@@ -47,7 +47,7 @@ const Navbar = () => {
   return (
     <nav className="bg-white opacity-90 shadow-md fixed top-0 left-0 right-0 z-50">
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-22">
+        <div className="flex justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center my-auto gap-x-3">
             <img src={esokoLogo} alt="logo" className="w-16" />
@@ -61,7 +61,7 @@ const Navbar = () => {
 
           {/* Navigation Navbar */}
           <div className="hidden md:flex flex-col justify-end h-full">
-            <div className="flex space-x-10 text-lg mt-14 mb-2 font-semibold">
+            <div className="flex space-x-10 text-lg mt-12 pb-2 font-semibold">
               {navItems.map((item) => (
                 <div key={item.key} className="relative cursor-pointer">
                   <div

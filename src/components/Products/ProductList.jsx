@@ -330,6 +330,12 @@ const FilterOverlay = ({ isOpen, onClose, onApplyFilters, initialFilters }) => {
     onClose();
   };
 
+  const handleClearAllFilters = () => {
+    setPriceRange(50000);
+    setSelectedTypes([]);
+    setSelectedCategories([]);
+  };
+
   const toggleType = (type) => {
     setSelectedTypes((prev) =>
       prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
@@ -344,19 +350,42 @@ const FilterOverlay = ({ isOpen, onClose, onApplyFilters, initialFilters }) => {
     );
   };
 
+  const handleOverlayClick = (e) => {
+    // Check if the click is on the overlay backdrop (not on the filter panel itself)
+    if (e.target.classList.contains("backdrop")) {
+      onClose();
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-x-0 top-28 bottom-0 bg-black bg-opacity-50 z-40 flex justify-end">
-      <div className="w-96 bg-white h-full p-6 shadow-2xl overflow-y-auto">
+    <div
+      className="fixed inset-x-0 top-[90px] bottom-0 backdrop-blur-sm bg-opacity-50 z-40 flex justify-end backdrop"
+      onClick={handleOverlayClick}
+    >
+      <div
+        className="w-96 bg-white bg-opacity-90 h-full p-6 rounded-tl-[28px] shadow-2xl overflow-y-auto"
+        // Prevent clicks on the filter panel from closing the overlay
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Rest of the existing component remains the same */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-gray-800">Filters</h2>
-          <button
-            onClick={onClose}
-            className="text-gray-600 hover:text-red-500"
-          >
-            <X size={24} />
-          </button>
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={handleClearAllFilters}
+              className="text-sm text-gray-600 font-semibold hover:text-orange-500 mr-8"
+            >
+              Clear All
+            </button>
+            <button
+              onClick={onClose}
+              className="text-gray-600 hover:text-red-500"
+            >
+              <X size={24} />
+            </button>
+          </div>
         </div>
 
         {/* Price Range Filter */}
@@ -369,7 +398,7 @@ const FilterOverlay = ({ isOpen, onClose, onApplyFilters, initialFilters }) => {
               max="50000"
               value={priceRange}
               onChange={(e) => setPriceRange(Number(e.target.value))}
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer range-slider"
+              className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer range-slider"
             />
           </div>
           <div className="flex justify-between text-sm font-semibold text-brand-primary mt-2">
@@ -495,13 +524,25 @@ const ProductsPage = () => {
         onApplyFilters={handleApplyFilters}
         initialFilters={activeFilters}
       />
-      <div className="bg-orange-50 min-h-screen pt-28 py-10">
+      <div className="bg-gray-100 min-h-screen pt-28 py-10">
         <div className="max-w-screen-2xl mx-auto px-4">
-          <div className="flex justify-between items-center">
-            <h1 className="py-2 px-4 pb-8 text-2xl font-bold text-orange-600">
+          <div className="flex justify-between ">
+            {/* Breadcrumb Navigation */}
+            <div className="max-w-screen-xl mx-auto px-4 pt-28 pb-6">
+              <nav className="flex items-center space-x-2 text-base text-gray-500">
+                <span>Store</span>
+                <ChevronRight size={16} />
+                <span>{selectedCategory}'s Collection</span>
+                <ChevronRight size={16} />
+                <span className="font-semibold text-orange-600">
+                  {product.name}
+                </span>
+              </nav>
+            </div>
+            <h1 className="py-2 px-4 pb-10 text-2xl font-bold text-orange-600">
               {selectedCategory === "All"
-                ? "All Products Collection"
-                : `${selectedCategory}'s Collection`}
+                ? "Store > All Products Collection"
+                : `Store > ${selectedCategory}'s Collection`}
             </h1>
             <div className="flex items-center space-x-4 w-full max-w-2xl">
               {/* Search Bar */}

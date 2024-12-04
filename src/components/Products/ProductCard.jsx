@@ -1,21 +1,34 @@
 import React, { useState } from "react";
 import { Heart } from "lucide-react";
 import { FaCartPlus } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const ProductCard = ({ product }) => {
   const [selectedSize, setSelectedSize] = useState(null);
   const [isFavorite, setIsFavorite] = useState(false);
+  const navigate = useNavigate();
+
+  const handleProductClick = () => {
+    // Navigate to product details page with product ID
+    navigate(`/product-details/${product.id}`);
+  };
 
   return (
-    <div className="bg-gray-50 rounded-b-xl rounded-t-2xl shadow-lg overflow-hidden transform transition-all hover:shadow-xl">
-      <div className="relative">
+    <div
+      className="bg-gray-50 rounded-b-xl rounded-t-2xl shadow-lg overflow-hidden transform transition-all hover:shadow-xl"
+      onClick={handleProductClick}
+    >
+      <div className="relative cursor-pointer">
         <img
           src={product.image}
           alt={product.name}
           className="w-full h-[220px] object-cover"
         />
         <button
-          onClick={() => setIsFavorite(!isFavorite)}
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent navigation when favoriting
+            setIsFavorite(!isFavorite);
+          }}
           className={`absolute top-4 right-4 p-2 rounded-full ${
             isFavorite ? "bg-orange-600 text-white" : "bg-white text-gray-600"
           } shadow-md hover:scale-110 transition`}
@@ -52,7 +65,10 @@ const ProductCard = ({ product }) => {
           {product.sizes.map((size) => (
             <button
               key={size}
-              onClick={() => setSelectedSize(size)}
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent navigation when selecting size
+                setSelectedSize(size);
+              }}
               className={`px-2 py-1 rounded border font-mono flex-shrink-0 ${
                 selectedSize === size
                   ? "bg-orange-500 text-white border-orange-500"
@@ -66,6 +82,7 @@ const ProductCard = ({ product }) => {
 
         <button
           disabled={!selectedSize}
+          onClick={(e) => e.stopPropagation()} // Prevent navigation when adding to cart
           className={`w-full flex items-center gap-3 justify-center py-2 font-semibold rounded-lg transition ${
             selectedSize
               ? "bg-orange-500 text-white hover:bg-orange-600"
