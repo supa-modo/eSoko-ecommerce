@@ -1,11 +1,11 @@
-import Header from "./Header";
+import ProductsPage from "./components/Products/ProductList";
 import HomePage from "./Homepage";
 
 function App() {
   return (
     <div>
-      {/* <Header /> */}
-      <HomePage />
+      {/* <HomePage /> */}
+      <ProductsPage />
     </div>
   );
 }
