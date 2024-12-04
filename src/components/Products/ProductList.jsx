@@ -12,6 +12,7 @@ import clothe6 from "../../assets/images/ladysuit.jpg";
 import clothe7 from "../../assets/images/shirt2.jpg";
 import clothe8 from "../../assets/images/shoe.jpg";
 import clothe9 from "../../assets/images/suit2.jpg";
+import Breadcrumbs from "../Layout/BreadcrumbNavigation";
 
 // Mock Product Data
 const productData = [
@@ -524,27 +525,18 @@ const ProductsPage = () => {
         onApplyFilters={handleApplyFilters}
         initialFilters={activeFilters}
       />
-      <div className="bg-gray-100 min-h-screen pt-28 py-10">
+      <div className="bg-gray-100 min-h-screen pt-24 py-10">
         <div className="max-w-screen-2xl mx-auto px-4">
           <div className="flex justify-between ">
             {/* Breadcrumb Navigation */}
-            <div className="max-w-screen-xl mx-auto px-4 pt-28 pb-6">
-              <nav className="flex items-center space-x-2 text-base text-gray-500">
-                <span>Store</span>
-                <ChevronRight size={16} />
-                <span>{selectedCategory}'s Collection</span>
-                <ChevronRight size={16} />
-                <span className="font-semibold text-orange-600">
-                  {product.name}
-                </span>
-              </nav>
-            </div>
             <h1 className="py-2 px-4 pb-10 text-2xl font-bold text-orange-600">
-              {selectedCategory === "All"
-                ? "Store > All Products Collection"
-                : `Store > ${selectedCategory}'s Collection`}
+              <Breadcrumbs
+                className="mt-3 px-4 text-2xl font-bold text-orange-600"
+                store="Store"
+                selectedCategory={selectedCategory}
+              />
             </h1>
-            <div className="flex items-center space-x-4 w-full max-w-2xl">
+            <div className="flex items-center space-x-4 w-full max-w-2xl mb-2">
               {/* Search Bar */}
               <div className="relative flex-grow">
                 <input

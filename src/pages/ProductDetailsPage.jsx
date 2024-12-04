@@ -19,6 +19,7 @@ import clothe6 from "../assets/images/ladysuit.jpg";
 import clothe7 from "../assets/images/shirt2.jpg";
 import clothe8 from "../assets/images/shoe.jpg";
 import clothe9 from "../assets/images/suit2.jpg";
+import Breadcrumbs from "../components/Layout/BreadcrumbNavigation";
 
 // mock product data from the product list component
 const productData = [
@@ -347,13 +348,11 @@ const ProductDetailsPage = () => {
 
       {/* Breadcrumb Navigation */}
       <div className="max-w-screen-xl mx-auto px-4 pt-28 pb-6">
-        <nav className="flex items-center space-x-2 text-base text-gray-500">
-          <span>Store</span>
-          <ChevronRight size={16} />
-          <span>{product.category}'s Collection</span>
-          <ChevronRight size={16} />
-          <span className="font-semibold text-orange-600">{product.name}</span>
-        </nav>
+        <Breadcrumbs
+          store="Store"
+          selectedCategory={product.category}
+          product={product.name}
+        />
       </div>
 
       <div className="max-w-screen-xl mx-auto px-4 grid md:grid-cols-2 gap-10">
