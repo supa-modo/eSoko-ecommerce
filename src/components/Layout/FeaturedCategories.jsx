@@ -1,14 +1,21 @@
 import React from "react";
+import kids from "../../assets/images/kids.webp";
+import men from "../../assets/images/mensFashion.jpg";
+import women from "../../assets/images/womenFashion.jpg";
 
 const FeaturedCategories = () => {
   const categories = [
-    { name: "Women", image: "/api/placeholder/400/600", link: "/women" },
-    { name: "Men", image: "/api/placeholder/400/600", link: "/men" },
-    { name: "Kids", image: "/api/placeholder/400/600", link: "/kids" },
+    {
+      name: "Women",
+      image: `${women}`,
+      link: "/products/women",
+    },
+    { name: "Men", image: `${men}`, link: "/products/men" },
+    { name: "Kids", image: `${kids}`, link: "/products/kids" },
   ];
 
   return (
-    <div className="py-16 bg-white">
+    <div className="py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl font-bold text-center mb-12">
           Shop by Category

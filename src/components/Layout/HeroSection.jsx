@@ -13,7 +13,7 @@ const HeroSection = () => {
           <p className="text-2xl italic mb-6">Shine in Your Element</p>
           <a
             href="#"
-            className="px-12 py-3 mb-20 bg-brand-primary text-white hover:bg-gray-100 transition rounded-full font-semibold"
+            className="px-12 py-3 mb-20 bg-brand-primary text-white hover:bg-gray-300 hover:text-brand-primary transition rounded-full font-semibold"
           >
             Shop Now
           </a>

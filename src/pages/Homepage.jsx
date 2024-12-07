@@ -12,10 +12,11 @@ import HeroSection from "../components/Layout/HeroSection";
 import FeaturedCategories from "../components/Layout/FeaturedCategories";
 import Footer from "../components/Layout/Footer";
 import Navbar from "../components/Layout/Navbar";
+import AllProducts from "../components/Products/AllProducts";
 
 const HomePage = () => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-gray-200">
       <div
         className=" bg-cover bg-center "
         style={{
@@ -31,7 +32,8 @@ const HomePage = () => {
       {/* <Navbar /> */}
       <main className="flex-grow">
         <FeaturedCategories />
-        {/* You can add more sections like New Arrivals, Featured Products, etc. */}
+        {/* TODO: To add more sections like New Arrivals, Featured Products, etc. */}
+        <AllProducts />
       </main>
       <Footer />
     </div>

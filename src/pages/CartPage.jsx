@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Trash2, Plus, Minus, ShoppingCart, ChevronRight } from "lucide-react";
 import Navbar from "../components/Layout/Navbar";
 import clothe1 from "../assets/images/casualShirts.jpg";
@@ -7,6 +8,8 @@ import clothe3 from "../assets/images/shirt1.jpg";
 import clothe4 from "../assets/images/ladysuit.jpg";
 
 const CartPage = () => {
+  const navigate = useNavigate(); // Initialize navigate function
+
   // Simulated cart items (in a real app, this would come from state management or context)
   const [cartItems, setCartItems] = useState([
     {
@@ -69,6 +72,11 @@ const CartPage = () => {
     setCartItems(cartItems.filter((item) => item.id !== id));
   };
 
+  // Navigate to product details
+  const navigateToProductDetails = (productId) => {
+    navigate(`/product-details/${productId}`);
+  };
+
   return (
     <div className="bg-gray-100 min-h-screen">
       <Navbar />
@@ -85,14 +93,15 @@ const CartPage = () => {
               </h1>
               <button className="text-gray-600 hover:text-red-500 flex items-center">
                 <Trash2 className="mr-2" />
-                Clear Cart
+                <span className="font-semibold">Clear Cart</span>
               </button>
             </div>
 
             {cartItems.map((item) => (
               <div
                 key={item.id}
-                className="bg-white rounded-xl shadow-md py-4 pl-4 pr-8 flex items-center space-x-6 hover:shadow-lg transition-shadow"
+                className="bg-white rounded-xl shadow-md py-4 pl-4 pr-8 flex items-center space-x-6 hover:shadow-lg transition-shadow cursor-pointer"
+                onClick={() => navigateToProductDetails(item.id)}
               >
                 {/* Product Image */}
                 <img
@@ -109,40 +118,59 @@ const CartPage = () => {
                   <div className="text-sm text-gray-500 mt-1">
                     Size: {item.size} | Color: {item.color}
                   </div>
-                  <div className="text-orange-600 font-bold mt-2">
+                  <div className="text-orange-600 font-mono text-sm font-bold mt-2">
                     Kshs. {item.price.toLocaleString()}
                   </div>
                 </div>
 
-                {/* Quantity Control */}
-                <div className="flex items-center space-x-3">
-                  <button
-                    onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                    className="bg-gray-200 p-2 rounded-lg hover:bg-orange-500 hover:text-white"
-                  >
-                    <Minus size={16} />
-                  </button>
-                  <span className="font-semibold">{item.quantity}</span>
-                  <button
-                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                    className="bg-gray-200 p-2 rounded-lg hover:bg-orange-500 hover:text-white"
-                  >
-                    <Plus size={16} />
-                  </button>
-                </div>
+                <div className="flex-col space-y-6">
+                  <div className="flex justify-between space-x-10">
+                    {/* Quantity Control */}
+                    <div className="flex items-center space-x-3 pt-6">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent navigating to product details
+                          updateQuantity(item.id, item.quantity - 1);
+                        }}
+                        className="bg-gray-200 p-2 rounded-lg hover:bg-orange-500 hover:text-white"
+                      >
+                        <Minus size={16} />
+                      </button>
+                      <span className="font-semibold">{item.quantity}</span>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent navigating to product details
+                          updateQuantity(item.id, item.quantity + 1);
+                        }}
+                        className="bg-gray-200 p-2 rounded-lg hover:bg-orange-500 hover:text-white"
+                      >
+                        <Plus size={16} />
+                      </button>
+                    </div>
 
-                {/* Total for Item */}
-                <div className="font-bold text-lg">
-                  Kshs. {(item.price * item.quantity).toLocaleString()}
-                </div>
+                    {/* Total for Item */}
+                    <div>
+                      <span className="text-xs">Item total:</span>
+                      <div className="font-bold font-mono text-brand-primary text-lg">
+                        Kshs. {(item.price * item.quantity).toLocaleString()}
+                      </div>
+                    </div>
+                  </div>
 
-                {/* Remove Item */}
-                <button
-                  onClick={() => removeItem(item.id)}
-                  className="text-red-500 hover:text-red-700"
-                >
-                  <Trash2 />
-                </button>
+                  {/* Remove Item */}
+                  <div className="flex justify-end">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent navigating to product details
+                        removeItem(item.id);
+                      }}
+                      className="text-red-500 py-2 px-3 rounded-lg hover:text-white hover:bg-brand-primary flex items-center space-x-2"
+                    >
+                      <Trash2 />
+                      <span className="font-semibold">Remove Item</span>
+                    </button>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
@@ -156,7 +184,7 @@ const CartPage = () => {
             <div className="space-y-4">
               <div className="flex justify-between">
                 <span className="text-gray-600">Subtotal</span>
-                <span className="font-semibold">
+                <span className="font-semibold font-mono">
                   Kshs. {calculateTotal().toLocaleString()}
                 </span>
               </div>
@@ -166,14 +194,14 @@ const CartPage = () => {
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Tax</span>
-                <span className="font-semibold">
+                <span className="font-semibold font-mono">
                   Kshs. {(calculateTotal() * 0.16).toLocaleString()}
                 </span>
               </div>
 
               <div className="border-t pt-4 flex justify-between">
                 <span className="text-xl font-bold">Total</span>
-                <span className="text-xl font-bold text-orange-600">
+                <span className="text-xl font-mono font-bold text-orange-600">
                   Kshs. {(calculateTotal() * 1.16).toLocaleString()}
                 </span>
               </div>
@@ -188,23 +216,6 @@ const CartPage = () => {
               <span>Proceed to Checkout</span>
               <ChevronRight />
             </button>
-
-            {/* Promo Code Section
-            <div className="mt-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Promo Code
-              </label>
-              <div className="flex">
-                <input
-                  type="text"
-                  placeholder="Enter promo code"
-                  className="flex-grow px-4 py-2 border rounded-l-lg"
-                />
-                <button className="bg-gray-200 px-4 py-2 rounded-r-lg hover:bg-gray-300">
-                  Apply
-                </button>
-              </div> */}
-            {/* </div> */}
           </div>
         </div>
       </div>

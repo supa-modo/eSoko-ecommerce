@@ -122,7 +122,7 @@ const UserSection = () => {
         </button>
         {/* Badge */}
         <span className="absolute -top-1 -right-2 flex items-center justify-center w-5 h-5 bg-brand-primary text-white text-xs font-bold rounded-full">
-          4
+          14
         </span>
       </div>
     </div>

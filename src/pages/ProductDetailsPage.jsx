@@ -497,6 +497,12 @@ const ProductDetailsPage = () => {
               </button>
             </div>
           </div>
+          {/* Conditional Text */}
+          {(!selectedSize || !selectedColor) && (
+            <p className="text-red-500 pb-2 px-3 text-[13px] font-semibold">
+              Choose a color and size to continue !!
+            </p>
+          )}
 
           {/* Action Buttons */}
           <div className="flex space-x-4">
@@ -505,7 +511,7 @@ const ProductDetailsPage = () => {
               className={`flex-1 flex items-center justify-center gap-3 py-3 rounded-lg font-semibold transition ${
                 selectedSize && selectedColor
                   ? "bg-orange-500 text-white hover:bg-orange-600"
-                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed "
               }`}
             >
               <FaCartPlus size={22} />
