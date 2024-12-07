@@ -1,7 +1,5 @@
 import React from "react";
-import Navbar from "../Layout/Navbar";
-import Footer from "../Layout/Footer";
-import ProductCard from "../Products/ProductCard";
+import ProductCard from "../components/Products/ProductCard";
 import { Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -16,7 +14,6 @@ const FavoritesPage = () => {
 
   return (
     <div>
-      <Navbar />
       <div className="bg-gray-100 min-h-screen pt-28 py-10">
         <div className="max-w-screen-2xl mx-auto px-4">
           {/* Header */}
@@ -52,7 +49,6 @@ const FavoritesPage = () => {
           )}
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

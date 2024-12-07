@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import esokoLogo from "../../assets/images/esoko-logo.png";
-import { Search, ShoppingBag, ShoppingCart } from "lucide-react";
 import UserSection from "../Cart/CartItem";
 
 const Navbar = () => {

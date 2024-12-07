@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Navigate, useParams, useNavigate } from "react-router-dom";
-import Navbar from "../Layout/Navbar";
-import ProductCard from "./ProductCard";
+import { useParams, useNavigate } from "react-router-dom";
+import ProductCard from "../components/Products/ProductCard";
 import { Search, SlidersHorizontal, X } from "lucide-react";
-import clothe1 from "../../assets/images/casualShirts.jpg";
-import clothe2 from "../../assets/images/denim-jeans.jpg";
-import clothe3 from "../../assets/images/shirt1.jpg";
-import clothe4 from "../../assets/images/jacket.jpg";
-import clothe5 from "../../assets/images/suits.jpg";
-import clothe6 from "../../assets/images/ladysuit.jpg";
-import clothe7 from "../../assets/images/shirt2.jpg";
-import clothe8 from "../../assets/images/shoe.jpg";
-import clothe9 from "../../assets/images/suit2.jpg";
-import Breadcrumbs from "../Layout/BreadcrumbNavigation";
-import Footer from "../Layout/Footer";
-import productDataJson from "../../data/productData.json";
+import clothe1 from "../assets/images/casualShirts.jpg";
+import clothe2 from "../assets/images/denim-jeans.jpg";
+import clothe3 from "../assets/images/shirt1.jpg";
+import clothe4 from "../assets/images/jacket.jpg";
+import clothe5 from "../assets/images/suits.jpg";
+import clothe6 from "../assets/images/ladysuit.jpg";
+import clothe7 from "../assets/images/shirt2.jpg";
+import clothe8 from "../assets/images/shoe.jpg";
+import clothe9 from "../assets/images/suit2.jpg";
+import Breadcrumbs from "../components/Layout/BreadcrumbNavigation";
+import productDataJson from "../data/productData.json";
 
 // Map image names to imported images
 const imageMap = {
@@ -294,7 +292,6 @@ const ProductsPage = () => {
 
   return (
     <div>
-      <Navbar />
       <FilterOverlay
         isOpen={isFilterOpen}
         onClose={() => setIsFilterOpen(false)}
@@ -371,7 +368,6 @@ const ProductsPage = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };
