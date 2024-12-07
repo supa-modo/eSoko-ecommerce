@@ -36,7 +36,7 @@ const FeaturedCategories = () => {
                   href={category.link}
                   className="text-white text-2xl font-bold bg-white bg-opacity-20 px-6 py-3 rounded-full hover:bg-opacity-40 transition"
                 >
-                  {category.name}
+                  {category.name}'s Collection
                 </a>
               </div>
             </div>

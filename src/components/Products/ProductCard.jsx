@@ -1,16 +1,75 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Heart } from "lucide-react";
 import { FaCartPlus } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 const ProductCard = ({ product }) => {
   const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedColor, setSelectedColor] = useState(product.colors[0]); // Default to first color
   const [isFavorite, setIsFavorite] = useState(false);
   const navigate = useNavigate();
 
+  // Check if product is in favorites on component mount
+  useEffect(() => {
+    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+    setIsFavorite(favorites.some((fav) => fav.id === product.id));
+  }, [product.id]);
+
   const handleProductClick = () => {
-    // Navigate to product details page with product ID
     navigate(`/product-details/${product.id}`);
+  };
+
+  const toggleFavorite = (e) => {
+    e.stopPropagation();
+    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+    
+    let newFavorites;
+    if (isFavorite) {
+      newFavorites = favorites.filter((fav) => fav.id !== product.id);
+    } else {
+      newFavorites = [...favorites, product];
+    }
+    
+    localStorage.setItem("favorites", JSON.stringify(newFavorites));
+    setIsFavorite(!isFavorite);
+  };
+
+  const addToCart = (e) => {
+    e.stopPropagation();
+    if (!selectedSize || !selectedColor) return;
+
+    const cartItem = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      size: selectedSize,
+      color: selectedColor,
+      quantity: 1
+    };
+
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    
+    // Check if item with same id, size, and color exists
+    const existingItemIndex = cart.findIndex(
+      item => 
+        item.id === cartItem.id && 
+        item.size === cartItem.size && 
+        item.color === cartItem.color
+    );
+
+    if (existingItemIndex !== -1) {
+      // Update quantity if item exists
+      cart[existingItemIndex].quantity += 1;
+    } else {
+      // Add new item if it doesn't exist
+      cart.push(cartItem);
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    
+    // Show success message or feedback
+    alert("Added to cart successfully!");
   };
 
   return (
@@ -25,10 +84,7 @@ const ProductCard = ({ product }) => {
           className="w-full h-[220px] object-cover"
         />
         <button
-          onClick={(e) => {
-            e.stopPropagation(); // Prevent navigation when favoriting
-            setIsFavorite(!isFavorite);
-          }}
+          onClick={toggleFavorite}
           className={`absolute top-4 right-4 p-2 rounded-full ${
             isFavorite ? "bg-orange-600 text-white" : "bg-white text-gray-600"
           } shadow-md hover:scale-110 transition`}
@@ -52,9 +108,17 @@ const ProductCard = ({ product }) => {
           </span>
           <div className="flex space-x-1">
             {product.colors.map((color) => (
-              <div
+              <button
                 key={color}
-                className="w-[18px] h-[18px] rounded-md border border-gray-200"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedColor(color);
+                }}
+                className={`w-[18px] h-[18px] rounded-md border-2 transition-all ${
+                  selectedColor === color
+                    ? "border-orange-500 scale-110"
+                    : "border-gray-200 hover:border-gray-300"
+                }`}
                 style={{ backgroundColor: color.toLowerCase() }}
               />
             ))}
@@ -66,7 +130,7 @@ const ProductCard = ({ product }) => {
             <button
               key={size}
               onClick={(e) => {
-                e.stopPropagation(); // Prevent navigation when selecting size
+                e.stopPropagation();
                 setSelectedSize(size);
               }}
               className={`px-2 py-1 rounded border font-mono flex-shrink-0 ${
@@ -81,16 +145,16 @@ const ProductCard = ({ product }) => {
         </div>
 
         <button
-          disabled={!selectedSize}
-          onClick={(e) => e.stopPropagation()} // Prevent navigation when adding to cart
+          disabled={!selectedSize || !selectedColor}
+          onClick={addToCart}
           className={`w-full flex items-center gap-3 justify-center py-2 font-semibold rounded-lg transition ${
-            selectedSize
+            selectedSize && selectedColor
               ? "bg-orange-500 text-white hover:bg-orange-600"
               : "bg-gray-300 text-gray-500 cursor-not-allowed"
           }`}
         >
-          <FaCartPlus size={22} className="" />
-          {selectedSize ? "Add to Cart" : "Select Size"}
+          <FaCartPlus size={22} />
+          {selectedSize && selectedColor ? "Add to Cart" : "Select Size & Color"}
         </button>
       </div>
     </div>

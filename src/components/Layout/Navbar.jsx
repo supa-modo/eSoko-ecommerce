@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import esokoLogo from "../../assets/images/esoko-logo.png";
 import { Search, ShoppingBag, ShoppingCart } from "lucide-react";
 import UserSection from "../Cart/CartItem";
@@ -8,13 +8,27 @@ const Navbar = () => {
   const [activeNav, setActiveNav] = useState("Home");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Update active nav based on current path
+  useEffect(() => {
+    const path = location.pathname;
+    if (path === "/") {
+      setActiveNav("Home");
+    } else if (path.includes("/products/men")) {
+      setActiveNav("Men");
+    } else if (path.includes("/products/women")) {
+      setActiveNav("Women");
+    } else if (path.includes("/products/kids")) {
+      setActiveNav("Kids");
+    }
+  }, [location.pathname]);
 
   const navItems = [
     {
       name: "Home",
       onClick: () => {
         navigate("/");
-        setActiveNav("Home");
       },
       key: "Home",
     },
@@ -22,7 +36,6 @@ const Navbar = () => {
       name: "Men",
       onClick: () => {
         navigate("/products/men");
-        setActiveNav("Men");
       },
       key: "Men",
     },
@@ -30,7 +43,6 @@ const Navbar = () => {
       name: "Women",
       onClick: () => {
         navigate("/products/women");
-        setActiveNav("Women");
       },
       key: "Women",
     },
@@ -38,7 +50,6 @@ const Navbar = () => {
       name: "Kids",
       onClick: () => {
         navigate("/products/kids");
-        setActiveNav("Kids");
       },
       key: "Kids",
     },
@@ -66,14 +77,11 @@ const Navbar = () => {
                 <div key={item.key} className="relative cursor-pointer">
                   <div
                     onClick={item.onClick}
-                    className={`
-                      ${
-                        activeNav === item.key
-                          ? "text-orange-500 font-semibold"
-                          : "text-gray-600 hover:text-black"
-                      }
-                      pb-2 transition-colors duration-300
-                    `}
+                    className={`${
+                      activeNav === item.key
+                        ? "text-orange-500 font-semibold"
+                        : "text-gray-600 hover:text-black"
+                    } pb-2 transition-colors duration-300`}
                   >
                     {item.name}
                   </div>

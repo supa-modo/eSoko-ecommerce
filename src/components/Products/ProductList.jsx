@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams, useNavigate } from "react-router-dom";
 import Navbar from "../Layout/Navbar";
 import ProductCard from "./ProductCard";
 import { Search, SlidersHorizontal, X } from "lucide-react";
@@ -14,295 +14,27 @@ import clothe8 from "../../assets/images/shoe.jpg";
 import clothe9 from "../../assets/images/suit2.jpg";
 import Breadcrumbs from "../Layout/BreadcrumbNavigation";
 import Footer from "../Layout/Footer";
+import productDataJson from "../../data/productData.json";
 
-// Mock Product Data
-const productData = [
-  {
-    id: 1,
-    name: "Classic Denim Jacket",
-    category: "Men",
-    price: 1299,
-    image: clothe1,
-    sizes: ["S", "M", "L", "XL"],
-    colors: ["Blue", "Black", "Gray"],
-  },
-  {
-    id: 2,
-    name: "Floral Summer Dress",
-    category: "Women",
-    price: 850,
-    image: clothe2,
-    sizes: ["XS", "S", "M", "L"],
-    colors: ["Pink", "White", "Blue"],
-  },
-  {
-    id: 3,
-    name: "Graphic Print T-Shirt",
-    category: "Kids",
-    price: 1000,
-    image: clothe3,
-    sizes: ["6-7Y", "8-9Y", "10-11Y", "12-13Y"],
-    colors: ["Red", "Blue", "Green"],
-  },
-  {
-    id: 4,
-    name: "Leather Bomber Jacket",
-    category: "Men",
-    price: 2500,
-    image: clothe4,
-    sizes: ["M", "L", "XL", "XXL"],
-    colors: ["Black", "Brown"],
-  },
-  {
-    id: 5,
-    name: "Bohemian Maxi Skirt",
-    category: "Women",
-    price: 799.5,
-    image: clothe6,
-    sizes: ["S", "M", "L"],
-    colors: ["Olive", "Rust", "Navy"],
-  },
-  {
-    id: 6,
-    name: "Sporty Kids Tracksuit",
-    category: "Kids",
-    price: 599,
-    image: clothe5,
-    sizes: ["4-5Y", "6-7Y", "8-9Y"],
-    colors: ["Blue", "Gray", "Red"],
-  },
-  {
-    id: 7,
-    name: "Cartoon Character Hoodie",
-    category: "Kids",
-    price: 300,
-    image: clothe9,
-    sizes: ["4-5Y", "6-7Y", "8-9Y", "10-11Y"],
-    colors: ["Blue", "Pink", "Yellow"],
-  },
-  {
-    id: 8,
-    name: "Urban Cargo Pants",
-    category: "Men",
-    price: 19699.99,
-    image: clothe7,
-    sizes: ["30", "32", "34", "36"],
-    colors: ["Khaki", "Black", "Olive"],
-  },
-  {
-    id: 9,
-    name: "Silk Blouse Long Text Name Example",
-    category: "Women",
-    price: 250,
-    image: clothe8,
-    sizes: ["XS", "S", "M", "L"],
-    colors: ["White", "Cream", "Navy"],
-  },
-  {
-    id: 10,
-    name: "Cartoon Character Hoodie",
-    category: "Kids",
-    price: 300,
-    image: clothe9,
-    sizes: ["4-5Y", "6-7Y", "8-9Y", "10-11Y"],
-    colors: ["Blue", "Pink", "Yellow"],
-  },
-  {
-    id: 11,
-    name: "Classic Chino Shorts",
-    category: "Men",
-    price: 599,
-    image: clothe6,
-    sizes: ["30", "32", "34", "36"],
-    colors: ["Khaki", "Navy", "White"],
-  },
+// Map image names to imported images
+const imageMap = {
+  clothe1,
+  clothe2,
+  clothe3,
+  clothe4,
+  clothe5,
+  clothe6,
+  clothe7,
+  clothe8,
+  clothe9,
+};
 
-  {
-    id: 12,
-    name: "Silk Blouse Long Text Name Example",
-    category: "Women",
-    price: 250,
-    image: clothe4,
-    sizes: ["XS", "S", "M", "L"],
-    colors: ["White", "Cream", "Navy"],
-  },
+// Process the JSON data to include actual image objects
+const productData = productDataJson.map((product) => ({
+  ...product,
+  image: imageMap[product.image],
+}));
 
-  {
-    id: 13,
-    name: "Bohemian Maxi Skirt",
-    category: "Women",
-    price: 799.5,
-    image: clothe3,
-    sizes: ["S", "M", "L"],
-    colors: ["Olive", "Rust", "Navy"],
-  },
-  {
-    id: 14,
-    name: "Classic Denim Jacket",
-    category: "Men",
-    price: 1299,
-    image: clothe1,
-    sizes: ["S", "M", "L", "XL"],
-    colors: ["Blue", "Black", "Gray"],
-  },
-  {
-    id: 15,
-    name: "Floral Summer Dress",
-    category: "Women",
-    price: 850,
-    image: clothe2,
-    sizes: ["XS", "S", "M", "L"],
-    colors: ["Pink", "White", "Blue"],
-  },
-  {
-    id: 16,
-    name: "Graphic Print T-Shirt",
-    category: "Kids",
-    price: 1000,
-    image: clothe3,
-    sizes: ["6-7Y", "8-9Y", "10-11Y", "12-13Y"],
-    colors: ["Red", "Blue", "Green"],
-  },
-  {
-    id: 17,
-    name: "Leather Bomber Jacket",
-    category: "Men",
-    price: 2500,
-    image: clothe4,
-    sizes: ["M", "L", "XL", "XXL"],
-    colors: ["Black", "Brown"],
-  },
-  {
-    id: 18,
-    name: "Bohemian Maxi Skirt",
-    category: "Women",
-    price: 799.5,
-    image: clothe6,
-    sizes: ["S", "M", "L"],
-    colors: ["Olive", "Rust", "Navy"],
-  },
-  {
-    id: 19,
-    name: "Sporty Kids Tracksuit",
-    category: "Kids",
-    price: 599,
-    image: clothe5,
-    sizes: ["4-5Y", "6-7Y", "8-9Y"],
-    colors: ["Blue", "Gray", "Red"],
-  },
-  {
-    id: 20,
-    name: "Cartoon Character Hoodie",
-    category: "Kids",
-    price: 300,
-    image: clothe9,
-    sizes: ["4-5Y", "6-7Y", "8-9Y", "10-11Y"],
-    colors: ["Blue", "Pink", "Yellow"],
-  },
-  {
-    id: 21,
-    name: "Urban Cargo Pants",
-    category: "Men",
-    price: 19699.99,
-    image: clothe7,
-    sizes: ["30", "32", "34", "36"],
-    colors: ["Khaki", "Black", "Olive"],
-  },
-  {
-    id: 22,
-    name: "Silk Blouse Long Text Name Example",
-    category: "Women",
-    price: 250,
-    image: clothe8,
-    sizes: ["XS", "S", "M", "L"],
-    colors: ["White", "Cream", "Navy"],
-  },
-  {
-    id: 23,
-    name: "Cartoon Character Hoodie",
-    category: "Kids",
-    price: 300,
-    image: clothe9,
-    sizes: ["4-5Y", "6-7Y", "8-9Y", "10-11Y"],
-    colors: ["Blue", "Pink", "Yellow"],
-  },
-  {
-    id: 24,
-    name: "Classic Chino Shorts",
-    category: "Men",
-    price: 599,
-    image: clothe6,
-    sizes: ["30", "32", "34", "36"],
-    colors: ["Khaki", "Navy", "White"],
-  },
-
-  {
-    id: 25,
-    name: "Silk Blouse Long Text Name Example",
-    category: "Women",
-    price: 250,
-    image: clothe4,
-    sizes: ["XS", "S", "M", "L"],
-    colors: ["White", "Cream", "Navy"],
-  },
-
-  {
-    id: 26,
-    name: "Bohemian Maxi Skirt",
-    category: "Women",
-    price: 799.5,
-    image: clothe3,
-    sizes: ["S", "M", "L"],
-    colors: ["Olive", "Rust", "Navy"],
-  },
-  {
-    id: 27,
-    name: "Silk Blouse Long Text Name Example",
-    category: "Women",
-    price: 250,
-    image: clothe8,
-    sizes: ["XS", "S", "M", "L"],
-    colors: ["White", "Cream", "Navy"],
-  },
-  {
-    id: 28,
-    name: "Cartoon Character Hoodie",
-    category: "Kids",
-    price: 300,
-    image: clothe9,
-    sizes: ["4-5Y", "6-7Y", "8-9Y", "10-11Y"],
-    colors: ["Blue", "Pink", "Yellow"],
-  },
-  {
-    id: 29,
-    name: "Classic Chino Shorts",
-    category: "Men",
-    price: 599,
-    image: clothe6,
-    sizes: ["30", "32", "34", "36"],
-    colors: ["Khaki", "Navy", "White"],
-  },
-
-  {
-    id: 30,
-    name: "Silk Blouse Long Text Name Example",
-    category: "Women",
-    price: 250,
-    image: clothe4,
-    sizes: ["XS", "S", "M", "L"],
-    colors: ["White", "Cream", "Navy"],
-  },
-
-  {
-    id: 31,
-    name: "Bohemian Maxi Skirt",
-    category: "Women",
-    price: 799.5,
-    image: clothe3,
-    sizes: ["S", "M", "L"],
-    colors: ["Olive", "Rust", "Navy"],
-  },
-];
 const FilterOverlay = ({ isOpen, onClose, onApplyFilters, initialFilters }) => {
   const [priceRange, setPriceRange] = useState(initialFilters.priceRange);
   const [selectedTypes, setSelectedTypes] = useState(initialFilters.types);
@@ -465,31 +197,51 @@ const FilterOverlay = ({ isOpen, onClose, onApplyFilters, initialFilters }) => {
 };
 
 const ProductsPage = () => {
-  const { category } = useParams(); // Get category from URL
+  const { category } = useParams();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
+  const searchRef = React.createRef();
+  const navigate = useNavigate();
   const [activeFilters, setActiveFilters] = useState({
     priceRange: 50000,
     types: [],
     categories: [],
   });
 
+  // Load all products for the All Products section
+  const [allProducts, setAllProducts] = useState([]);
+
+  useEffect(() => {
+    setAllProducts(productData);
+  }, []);
+
   // Update selected category when route changes
   useEffect(() => {
-    // Normalize the category from URL
-    const normalizedCategory =
-      category === "men"
-        ? "Men"
-        : category === "women"
-          ? "Women"
-          : category === "kids"
-            ? "Kids"
-            : "All";
+    if (category) {
+      // Normalize the category from URL
+      const normalizedCategory =
+        category.toLowerCase() === "men"
+          ? "Men"
+          : category.toLowerCase() === "women"
+            ? "Women"
+            : category.toLowerCase() === "kids"
+              ? "Kids"
+              : "All";
 
-    setSelectedCategory(normalizedCategory);
+      setSelectedCategory(normalizedCategory);
+    } else {
+      setSelectedCategory("All");
+    }
   }, [category]);
 
   const filteredProducts = productData.filter((product) => {
+    const matchesSearch = searchQuery
+      ? product.name.toLowerCase().includes(searchQuery.toLowerCase())
+      : true;
+
     const matchesCategory =
       selectedCategory === "All" || product.category === selectedCategory;
 
@@ -506,6 +258,7 @@ const ProductsPage = () => {
       activeFilters.categories.includes(product.category);
 
     return (
+      matchesSearch &&
       matchesCategory &&
       matchesPriceRange &&
       matchesTypes &&
@@ -515,6 +268,28 @@ const ProductsPage = () => {
 
   const handleApplyFilters = (filters) => {
     setActiveFilters(filters);
+  };
+
+  const handleSearchChange = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    if (query.length > 2) {
+      const matchingProducts = productData.filter((product) =>
+        product.name.toLowerCase().includes(query.toLowerCase())
+      );
+      setSuggestions(matchingProducts);
+      setShowSuggestions(true);
+    } else {
+      setSuggestions([]);
+      setShowSuggestions(false);
+    }
+  };
+
+  const handleSuggestionClick = (product) => {
+    setSearchQuery(product.name);
+    navigate(`/product-details/${product.id}`);
+    setSuggestions([]);
+    setShowSuggestions(false);
   };
 
   return (
@@ -539,13 +314,44 @@ const ProductsPage = () => {
             </h1>
             <div className="flex items-center space-x-4 w-full max-w-2xl mb-2">
               {/* Search Bar */}
-              <div className="relative flex-grow">
+              <div className="relative flex-grow" ref={searchRef}>
                 <input
                   type="text"
                   className="border-2 border-brand-primary px-4 py-2 pl-14 font-semibold rounded-full w-full"
                   placeholder="Search product name...."
+                  value={searchQuery}
+                  onChange={handleSearchChange}
                 />
                 <Search className="absolute left-4 top-3 text-gray-500" />
+
+                {/* Suggestions Overlay */}
+                {showSuggestions && suggestions.length > 0 && (
+                  <div className="absolute z-50 w-full mt-2 bg-white rounded-lg shadow-lg border border-gray-200 transition-all duration-300 ease-in-out">
+                    {suggestions.map((product, index) => (
+                      <div
+                        key={product.id}
+                        className={`px-4 py-3 cursor-pointer hover:bg-orange-500 text-gray-600 hover:text-white flex items-center space-x-3 ${
+                          index !== suggestions.length - 1
+                            ? "border-b border-gray-100"
+                            : ""
+                        }`}
+                        onClick={() => handleSuggestionClick(product)}
+                      >
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className="w-10 h-10 object-cover rounded-md"
+                        />
+                        <div>
+                          <div className="font-semibold  ">{product.name}</div>
+                          <div className="text-sm font-semibold">
+                            Kshs. {product.price.toLocaleString()}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Filter Button */}

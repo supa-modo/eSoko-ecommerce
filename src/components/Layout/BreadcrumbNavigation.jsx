@@ -8,6 +8,11 @@ const Breadcrumbs = ({
   product = null,
   className = "",
 }) => {
+  // Function to normalize category for URL
+  const getNormalizedCategory = (category) => {
+    return category?.toLowerCase().replace("'s collection", "");
+  };
+
   return (
     <nav
       aria-label="Breadcrumb"
@@ -29,14 +34,14 @@ const Breadcrumbs = ({
           {/* If product exists, make category clickable. Otherwise, keep it as current page */}
           {product ? (
             <Link
-              to={`/products/${selectedCategory}`}
+              to={`/products/${getNormalizedCategory(selectedCategory)}`}
               className="hover:text-gray-700 hover:underline transition-colors"
             >
               {`${selectedCategory}'s Collection`}
             </Link>
           ) : (
             <span className="text-gray-700 font-semibold">
-              {selectedCategory}'s Collection
+              {`${selectedCategory}'s Collection`}
             </span>
           )}
         </>
@@ -46,7 +51,6 @@ const Breadcrumbs = ({
       {product && (
         <>
           <ChevronRight />
-
           <span className="text-brand-primary font-semibold">{product}</span>
         </>
       )}
