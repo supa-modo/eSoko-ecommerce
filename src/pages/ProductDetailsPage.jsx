@@ -9,12 +9,41 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { FaCartPlus, FaShoppingBag } from "react-icons/fa";
+import productData from "../data/productData.json";
+import clothe1 from "../assets/images/casualShirts.jpg";
+import clothe2 from "../assets/images/denim-jeans.jpg";
+import clothe3 from "../assets/images/shirt1.jpg";
+import clothe4 from "../assets/images/jacket.jpg";
+import clothe5 from "../assets/images/suits.jpg";
+import clothe6 from "../assets/images/ladysuit.jpg";
+import clothe7 from "../assets/images/shirt2.jpg";
+import clothe8 from "../assets/images/shoe.jpg";
+import clothe9 from "../assets/images/suit2.jpg";
 
 import Breadcrumbs from "../components/Layout/BreadcrumbNavigation";
 
+// Map image names to imported images
+const imageMap = {
+  clothe1,
+  clothe2,
+  clothe3,
+  clothe4,
+  clothe5,
+  clothe6,
+  clothe7,
+  clothe8,
+  clothe9,
+};
+
+// Process the JSON data to include actual image objects
+const productsWithImages = productData.map((product) => ({
+  ...product,
+  image: imageMap[product.image],
+}));
+
 const ProductDetailsPage = () => {
   const { productId } = useParams();
-  const product = productData.find((p) => p.id === parseInt(productId));
+  const product = productsWithImages.find((p) => p.id === parseInt(productId));
 
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
@@ -29,7 +58,7 @@ const ProductDetailsPage = () => {
   // Simulated additional product images (using existing images)
   const productImages = [
     product.image,
-    ...productData.slice(0, 3).map((p) => p.image),
+    ...productsWithImages.slice(0, 3).map((p) => p.image),
   ];
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);

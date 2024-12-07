@@ -1,22 +1,24 @@
-import React, { useState, useRef, useEffect } from "react";
-import {
-  Search,
-  ShoppingCart,
-  UserRound,
-  ChevronDown,
-  Heart,
-} from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import React, { useRef, useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { UserRound, ChevronDown, ShoppingCart, Heart } from "lucide-react";
+import { useAuth } from "../../context/AuthContext";
 
 const UserSection = () => {
-  const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
   const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   const toggleDropdown = () => {
-    setIsDropdownOpen((prevState) => !prevState);
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleLogout = () => {
+    logout();
+    setIsDropdownOpen(false);
+    navigate("/login");
   };
 
   // Update cart count whenever localStorage changes
@@ -50,7 +52,6 @@ const UserSection = () => {
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target) &&
-        buttonRef.current &&
         !buttonRef.current.contains(event.target)
       ) {
         setIsDropdownOpen(false);
@@ -58,115 +59,120 @@ const UserSection = () => {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
   return (
-    <div className="flex my-auto space-x-4 items-center relative">
-      {/* Cart section */}
-      <div className="mr-1">
-        <button
-          onClick={() => {
-            navigate(`/cart`);
-          }}
-          className="flex items-center space-x-2 hover:text-brand-primary font-semibold text-gray-600"
-        >
-          <div className="relative">
-            <ShoppingCart size={28} />
-            {cartItemCount > 0 && (
-              <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                {cartItemCount}
-              </span>
-            )}
-          </div>
-          <span>Cart</span>
-        </button>
-      </div>
+    <div className="flex items-center space-x-5">
+      <Link
+        to="/favourites"
+        className="text-gray-600 flex space-x-2 hover:text-orange-500"
+      >
+        <Heart className="w-6 h-6" />
+        <span className="font-semibold">Favourites</span>
+      </Link>
 
-      {/* Favourites section */}
-      <div>
-        <button
-          onClick={() => {
-            navigate(`/favourites`);
-          }}
-          className="flex items-center space-x-2 hover:text-brand-primary font-semibold text-gray-600"
-        >
-          <Heart />
-          <span>Favourites</span>
-        </button>
-      </div>
-
-      {/* User Profile Section */}
-      <div className="relative">
-        <div className="flex items-center space-x-2 pl-2">
-          <button
-            ref={buttonRef}
-            onClick={toggleDropdown}
-            className="text-gray-600 hover:text-brand-primary flex items-center"
-          >
-            <UserRound className="w-6 h-6 mr-1" />
-            <span className="font-semibold px-1">Username</span>
-            <ChevronDown className="w-6 h-6" />
-          </button>
+      <Link
+        to="/cart"
+        className="text-gray-600 flex space-x-2  hover:text-orange-500 "
+      >
+        <div className="relative">
+          <ShoppingCart className="w-6 h-6" />
+          {cartItemCount > 0 && (
+            <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              {cartItemCount}
+            </span>
+          )}
         </div>
+        <span className="font-semibold">Cart</span>
+      </Link>
 
-        {/* Dropdown Overlay */}
-        {isDropdownOpen && (
-          <div
-            ref={dropdownRef}
-            className="absolute right-0 top-full mt-2 w-64 bg-white shadow-lg rounded-lg border border-gray-200 z-50"
-          >
-            <div className="p-4">
-              <div className="flex items-center border-b-2 pb-3 mb-2">
-                <UserRound className="w-6 h-6 mr-3 text-gray-600" />
-                <div>
-                  <p className="font-semibold text-brand-primary">John Doe</p>
-                  <p className="text-sm text-gray-500">johndoe@example.com</p>
-                </div>
-              </div>
-              <ul className="space-y-2">
-                <li>
-                  <a
-                    href="/profile"
-                    className="font-semibold block py-1 px-2 hover:bg-brand-primary rounded text-gray-500 hover:text-white"
-                  >
-                    Profile
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/settings"
-                    className="font-semibold block py-1 px-2 hover:bg-brand-primary rounded text-gray-500 hover:text-white"
-                  >
-                    Settings
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/orders"
-                    className="font-semibold block py-1 px-2 hover:bg-brand-primary rounded text-gray-500 hover:text-white"
-                  >
-                    Orders
-                  </a>
-                </li>
-                <li>
-                  <button
-                    onClick={() => {
-                      // Add logout logic here
-                    }}
-                    className="w-full text-left font-semibold py-1 px-2 hover:bg-brand-primary rounded text-gray-500 hover:text-white"
-                  >
-                    Logout
-                  </button>
-                </li>
-              </ul>
-            </div>
+      {user ? (
+        /* User Profile Section */
+        <div className="relative">
+          <div className="flex items-center space-x-1 pl-1">
+            <button
+              ref={buttonRef}
+              onClick={toggleDropdown}
+              className="text-gray-600 hover:text-orange-500 flex items-center"
+            >
+              <UserRound className="w-6 h-6 mr-1" />
+              <span className="font-semibold px-1">{user.name}</span>
+              <ChevronDown className="w-6 h-6" />
+            </button>
           </div>
-        )}
-      </div>
+
+          {/* Dropdown Overlay */}
+          {isDropdownOpen && (
+            <div
+              ref={dropdownRef}
+              className="absolute right-0 top-full mt-2 w-64 bg-white shadow-lg rounded-lg border border-gray-200 z-50"
+            >
+              <div className="p-4">
+                <div className="flex items-center border-b-2 pb-3 mb-2">
+                  <UserRound className="w-6 h-6 mr-3 text-gray-600" />
+                  <div>
+                    <p className="font-semibold text-orange-500">{user.name}</p>
+                    <p className="text-sm text-gray-500">{user.email}</p>
+                  </div>
+                </div>
+                <ul className="space-y-2">
+                  <li>
+                    <Link
+                      to="/profile"
+                      className="font-semibold block py-1 px-2 hover:bg-orange-500 rounded text-gray-500 hover:text-white"
+                    >
+                      Profile
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/settings"
+                      className="font-semibold block py-1 px-2 hover:bg-orange-500 rounded text-gray-500 hover:text-white"
+                    >
+                      Settings
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/orders"
+                      className="font-semibold block py-1 px-2 hover:bg-orange-500 rounded text-gray-500 hover:text-white"
+                    >
+                      Orders
+                    </Link>
+                  </li>
+                  <li>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left font-semibold py-1 px-2 hover:bg-orange-500 rounded text-gray-500 hover:text-white"
+                    >
+                      Logout
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          )}
+        </div>
+      ) : (
+        /* Sign In/Sign Up buttons */
+        <div className="flex items-center space-x-4">
+          <Link
+            to="/login"
+            className="text-gray-600 hover:text-orange-500 font-medium"
+          >
+            Sign In
+          </Link>
+          <Link
+            to="/signup"
+            className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 transition-colors duration-300"
+          >
+            Sign Up
+          </Link>
+        </div>
+      )}
     </div>
   );
 };
